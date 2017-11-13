@@ -17,6 +17,8 @@ function script() {
 		map = new google.maps.Map(document.getElementById("map"), initOptions);
 	}
 
+
+    // API Key: d0835923-7f86-490f-a542-1f4ae031a374
 	/*// Get Class Data using HTTP "POST"
         var request = new XMLHttpRequest();
         request.open("POST", 'https://blueberry-custard-21959.herokuapp.com/sendLocation', true);
