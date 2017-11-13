@@ -17,7 +17,7 @@ function script() {
 		map = new google.maps.Map(document.getElementById("map"), initOptions);
 	}
 
-	// Get Class Data using HTTP "POST"
+	/*// Get Class Data using HTTP "POST"
         var request = new XMLHttpRequest();
         request.open("POST", 'https://blueberry-custard-21959.herokuapp.com/sendLocation', true);
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -31,5 +31,5 @@ function script() {
             }else{
                 document.getElementById("map").innerHTML = "Loading...";
             }
-        }
+        }*/
 }
