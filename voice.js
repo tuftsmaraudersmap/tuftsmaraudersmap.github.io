@@ -5,8 +5,8 @@ navigator.mediaDevices.getUserMedia({audio:true})
 			audioChunks.push(e.data);
 			if (rec.state == "inactive"){
         let blob = new Blob(audioChunks,{type:'audio/x-mpeg-3'});
+        console.log(blob.type);
        	console.log(URL.createObjectURL(blob));
-       	window.location = URL.createObjectURL(blob);
 
      }
 		}
