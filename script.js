@@ -1,17 +1,17 @@
 var map;
 function script() {
-	var myLat = 42.405892;
-    var myLng = -71.116562;
+	var secLat = 42.405892;
+    var secLng = -71.116562;
 
     
     moveOn1();
 
     function moveOn1() {
     	var map;
-    	me = new google.maps.LatLng(myLat, myLng);
+    	cent = new google.maps.LatLng(secLat, secLng);
 		var initOptions = {
 	            zoom: 15,
-	            center: me,
+	            center: cent,
 	            mapTypeId: google.maps.MapTypeId.ROADMAP
 	        };
 		map = new google.maps.Map(document.getElementById("map"), initOptions);
