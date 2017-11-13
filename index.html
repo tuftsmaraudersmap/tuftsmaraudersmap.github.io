@@ -11,6 +11,16 @@
         </head>
 <body>
                 <h2>Press the button and say the password</h2>
-                <button id="record" type="button" onclick="voiceScript()">Speak</button>
+                <div>
+				<h2>Audio record and playback</h2>
+				<p>
+			<button id=startRecord>start</button>
+			<button id=stopRecord disabled>stop</button>
+			</p>	
+		<p>
+			<audio id=recordedAudio></audio>
+			<a id=audioDownload></a>
+		</p>
+</div>
 </body>
 </html>
