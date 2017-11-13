@@ -5,12 +5,7 @@ navigator.mediaDevices.getUserMedia({audio:true})
 			audioChunks.push(e.data);
 			if (rec.state == "inactive"){
         let blob = new Blob(audioChunks,{type:'audio/x-mpeg-3'});
-        recordedAudio.src = URL.createObjectURL(blob);
-        recordedAudio.controls=true;
-        recordedAudio.autoplay=false;
-        audioDownload.href = recordedAudio.src;
-        audioDownload.download = 'mp3';
-        audioDownload.innerHTML = 'download';
+       	console(URL.createObjectURL(blob));
      }
 		}
 	})
