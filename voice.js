@@ -63,7 +63,10 @@ if (!('webkitSpeechRecognition' in window)) {
     interim_span.innerHTML = linebreak(interim_transcript);
     if (interim_transcript == "I solemnly swear that I'm upto no good" || 
     	interim_transcript == "I solemnly swear that I'm up to no good" ||
-    	interim_transcript == "I solemnly swear I'm up to no good") {
+    	interim_transcript == "I solemnly swear I'm up to no good" ||
+    	interim_transcript == "I solemnly swear that I am upto no good" || 
+    	interim_transcript == "I solemnly swear that I am up to no good" ||
+    	interim_transcript == "I solemnly swear I am up to no good") {
     	window.location.replace("./mapDisplay.html");
 
     }
