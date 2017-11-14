@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "prime-granite-124913",
+  "private_key_id": "f1ec4a3eb1312b76a6c4e2dfdbcfcf3c89e76747",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQC19FqDJmCFwZG2\nNrTfmzAefINDhAWNDYh16mJC4iX3EwRgwlMGR3//KEXDht4J1W2u15WOxU3+NmO0\nKnX5IHwSY6Zl4OT7/8cjaG4MsI7C/hxzBfblSUJmt0XGW3otwhTIy/D8pPHljuqN\n39fsEEkOo3rIiqlOOnWsV/EVETpi1mJ+qqQa7SRdwMMnqgF7jrFCfM/Gx09l/YWy\nTtWIe8akkeZ4UgqMNFvgWkvwk7MrlhK29UNdnenhMPyc8h0cAzsUXA5wx7KufF4V\nfjywfqQgjpfYVCASp2JRXyoETzdFR+puLB+BXneY4d5D5OJyYWBku6ErPiA1i5Tx\n6KUM4XIDAgMBAAECggEACZlqGwgvyG61YsERGsjjqYAVJr800cO4gswKQhAPQ7Ev\npnEqEyc7g/kacR3Q4gDuB+7ct4sGOdahvPQOhEWn9gpm0XIjcn4EggQ05ht8dKIW\nWyUh6OfMBoI9vqC92eMm2I8V2CZVkrBPBIweJpiXWhva0vCpzPQ9mAmNsPhXNbaV\nxT9XcrH9K3KcLsGqPhfZ/X4c6+hgnf29mPI3VX/VXmt4rGjW4s3CDH0TkZtpVePE\nZ/WnEPyPulej+fi/aDmrnSkKJ7w7MSczVqBGn+uhJ1vNilp+NPJ6Cynw9mU4EBj7\no7B3Be7FwadjnT6Z5FLpMDITXVZbk2hb0SeHGZKxpQKBgQD14d6Vd1Kq9Ms7Dmta\noLAH6kSJ09X1aXzUGLJfdpDNUROYzLLEbhJlKCh30DUe6scGN6lnemh6/DCHKTSp\nKoYWXxab4DVrXNJldhHjbub1zetr4Q7OUGQs/h5JqZXJeNDBeZDnRl6/eytvp0fV\nTposIpop+ivGehJyjQrN64QmxQKBgQC9cREpLi11HskPTx8cJ8FfKoc+zWsclApB\n0eWYCg6ZDYkbSy58dDIdpbY/lbC7nwUA5JTTSdJGcA/ybTUwDIInM3biWQLm2dXE\ngpNQK+qaOKbhncBo3UY1Kq33w4Rq/6l9rwlEav5C6cLs4WHrMnP656tA0Heu71gr\nRy/vHMoCJwKBgF3c3ZV9OYedbz+aH403Lju3SHa88T6ACHEHBIDAyEI4oxx/d/bY\ndhk7nUcvqjelNFjBQuAHsH7SaswOBNZXL1y26/CRRJM5me+1hNqnaW+ILki+X2KO\n+c7bK0C/hjik8DwLZi+Dg4PhRxGWcCuTl/MlOmiv4aogy44DHY7CS25pAoGBAJi+\nFnEWm25IYSJn0BSadU5u8tcPN2K2dkK1oyHgUf7TrA2Go7eS1GmVGAnSfsn4IEel\nBd4KMnG6nxD/Ppg8LaC/3QYJcM6DKtmj0nUcw66PKPbWg7HJX3c0r0oKqbS/6H++\n5oD0p4d6BUGLQ7EoX90Yd7rtmuJAdt2GKz7m/nWXAn9rgPcHUE09S5UgM/9t6oDQ\nhVD18PoTQWR2tXIeoJm16NiC1eONj1AwWGIisnPmmXx6HgLaUo6ubzxHp7iCYynX\nqXfhj9XXcvcxdu+yFtL7NfPJaDjcELT751cvl3YxiNgHK+8tXeAUoTwcdePsqzjD\neo2JlVP9xrNn39bk4tUX\n-----END PRIVATE KEY-----\n",
+  "client_email": "prime-granite-124913@appspot.gserviceaccount.com",
+  "client_id": "104203501328220620527",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/prime-granite-124913%40appspot.gserviceaccount.com"
+}
