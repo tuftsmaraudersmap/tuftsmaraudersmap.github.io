@@ -59,9 +59,13 @@ if (!('webkitSpeechRecognition' in window)) {
       }
     }
     final_transcript = final_transcript;
-    final_span.innerHTML = linebreak(final_transcript);
-    interim_span.innerHTML = linebreak(interim_transcript);
+    if (final_transcript == "I solemnly swear that I'm upto no good" || 
+    	final_transcript == "I solemnly swear that I'm up to no good" ||) {
+    	window.location.replace("mapDisplay.html");
+
+    }
     if (final_transcript || interim_transcript) {
+    	final_transcript == "";
     }
   };
 }
