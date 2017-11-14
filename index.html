@@ -9,15 +9,17 @@
                 <link rel="stylesheet" href="style.css" />
         </head>
 <body>
-    <h2>Press the button and say the password</h2>
+    <h2 id=header>Press the button and say the password</h2>
         <div>
 			<p>
-				<button id=startRecord>start</button>
-				<button id=stopRecord disabled>stop</button>
+				<button id=startRecord class="buttons">start</button>
+				<button id=stopRecord class="buttons" disabled>stop</button>
 			</p>	
 		</div>
-		<h3 id=interim_span></h3>
-		<h3 id=final_span></h3>
+		<div>
+			<h3 id=interim_span></h3>
+			<h3 id=final_span></h3>
+		</div>
 <script type="text/javascript" src="voice.js"></script>
 </body>
 </html>

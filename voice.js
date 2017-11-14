@@ -59,9 +59,12 @@ if (!('webkitSpeechRecognition' in window)) {
       }
     }
     final_transcript = final_transcript;
+    final_span.innerHTML = linebreak(final_transcript);
+    interim_span.innerHTML = linebreak(interim_transcript);
     if (interim_transcript == "I solemnly swear that I'm upto no good" || 
-    	interim_transcript == "I solemnly swear that I'm up to no good") {
-    	window.location.replace("mapDisplay.html");
+    	interim_transcript == "I solemnly swear that I'm up to no good" ||
+    	interim_transcript == "I solemnly swear I'm up to no good") {
+    	window.location.replace("./mapDisplay.html");
 
     }
     if (final_transcript || interim_transcript) {
@@ -70,7 +73,10 @@ if (!('webkitSpeechRecognition' in window)) {
 }
 
 function upgrade() {
-	alert('browser needs to be upgraded')
+	alert('Please use a recent version of the Google Chrome browser with this webpage.\n\nOther browsers do not support the speech API used in this site')
+	startRecord.disabled = true;
+  	stopRecord.disabled=true;
+  	header.innerHTML = "Your browser does not support the speech API! :("
 }
 
 var two_line = /\n\n/g;
@@ -78,10 +84,6 @@ var one_line = /\n/g;
 function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
-
-
-
-
 
 startRecord.onclick = e => {
   startRecord.disabled = true;
