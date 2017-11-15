@@ -132,24 +132,20 @@ function script() {
 
 
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
-	/// Get Class Data using HTTP "POST"
+    // Documentation for Thingworx REST API: https://community.thingworx.com/docs/DOC-3315 
         var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "https://academic-ni.cloud.thingworx.com/Thingworx/Things/NIUtility/Services/CreateApplicationKey",
-  "method": "POST",
-  "headers": {
-    "content-type": "application/json",
-    "accept": "application/json",
-    "appkey": "712ce35d-2511-48da-9c15-a1d45a044f4f"
-  },
-  "processData": false,
-  "data": "{\n\t\"appKeyName\":\"MyKey\",\n\t\"username\":\"ME184\"\n}"
-}
+            "async": true,
+            "crossDomain": true,
+            "url": "https://academic-ni.cloud.thingworx.com/Thingworx/Things/weather_ME184/Properties/temperature?appKey=d0835923-7f86-490f-a542-1f4ae031a374&x-thingworx-session=true",
+            "method": "GET",
+            "headers": {
+                "accept": "application/json",
+            },
+        }
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
 }
 
 function getCookie(cname) {
