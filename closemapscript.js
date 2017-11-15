@@ -58,19 +58,17 @@ if (!('webkitSpeechRecognition' in window)) {
         interim_transcript += event.results[i][0].transcript;
       }
     }
-    final_transcript = final_transcript;
-    final_span.innerHTML = linebreak(final_transcript);
-    interim_span.innerHTML = linebreak(interim_transcript);
+    console.log(interim_transcript);
+    if (interim_transcript == "mischief managed" ) {
+    	//interim_transcript == "I solemnly swear that I'm up to no good" ||
+    	//interim_transcript == "I solemnly swear I'm up to no good" ||
+    	//interim_transcript == "I solemnly swear that I am upto no good" || 
+    	//interim_transcript == "I solemnly swear that I am up to no good" ||
+    	//interim_transcript == "I solemnly swear I am up to no good" ) {
+    	
+      window.location.replace("./index.html");
 
-    if (interim_transcript.includes("I solemnly swear that I'm upto no good") || 
-    	interim_transcript.includes("I solemnly swear that I'm up to no good") ||
-    	interim_transcript.includes("I solemnly swear I'm up to no good") ||
-    	interim_transcript.includes( "I solemnly swear that I am upto no good") || 
-    	interim_transcript .includes("I solemnly swear that I am up to no good") ||
-    	interim_transcript.includes("I solemnly swear I am up to no good")) {
-    	window.location.replace("./mapDisplay.html");
-	}
-
+    }
     if (final_transcript || interim_transcript) {
     }
   };
@@ -89,24 +87,10 @@ function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
 
-startRecord.onclick = e => {
-  startRecord.disabled = true;
-  stopRecord.disabled=false;
+bodyDiv.onload = e => {
   final_transcript = '';
   recognition.lang = 'en-US';
   recognition.start();
   ignore_onend = false;
-  final_span.innerHTML = '';
-  interim_span.innerHTML = '';
   start_timestamp = event.timeStamp;
-}
-
-
-stopRecord.onclick = e => {
-  startRecord.disabled = false;
-  stopRecord.disabled=true;
-  if (recognizing) {
-    recognition.stop();
-  	return;
-  }
 }
