@@ -98,9 +98,27 @@ recognition.start();
 ignore_onend = false;
 start_timestamp = Math.floor(Date.now());
 
+var start_recognize = setInterval(function(){
+    if (!recognizing) {
+        console.log('loaded')
+        final_transcript = '';
+        recognition.lang = 'en-US';
+        recognition.start();
+        ignore_onend = false;
+        start_timestamp = Math.floor(Date.now());
+    }
+}, 10000)
+
+
+
 ////////////////////////// Map Script Items /////////////////////////////////
 
 function script() {
+    var verified = getCookie("verified");
+    if (verified == "false") {
+        window.location.replace("./index.html");
+    }
+
 	var secLat = 42.405892;
     var secLng = -71.116562;
 
@@ -135,4 +153,20 @@ function script() {
                 document.getElementById("map").innerHTML = "Loading...";
             }
         }*/
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

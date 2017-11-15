@@ -3,6 +3,8 @@ var recognizing = false;
 var ignore_onend;
 var start_timestamp;
 
+document.cookie = "verified=false";
+
 if (!('webkitSpeechRecognition' in window)) {
   upgrade();
 } else {
@@ -68,6 +70,7 @@ if (!('webkitSpeechRecognition' in window)) {
     	interim_transcript.includes( "I solemnly swear that I am upto no good") || 
     	interim_transcript .includes("I solemnly swear that I am up to no good") ||
     	interim_transcript.includes("I solemnly swear I am up to no good")) {
+    	document.cookie = "verified=true"
     	window.location.replace("./mapDisplay.html");
 	}
 
