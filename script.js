@@ -63,13 +63,7 @@ if (!('webkitSpeechRecognition' in window)) {
     }
     console.log(interim_transcript);
     if (interim_transcript.includes("mischief managed") ) {
-        //interim_transcript == "I solemnly swear that I'm up to no good" ||
-        //interim_transcript == "I solemnly swear I'm up to no good" ||
-        //interim_transcript == "I solemnly swear that I am upto no good" || 
-        //interim_transcript == "I solemnly swear that I am up to no good" ||
-        //interim_transcript == "I solemnly swear I am up to no good" ) {
-        
-      window.location.replace("./index.html");
+        window.location.replace("./index.html");
     }
     if (final_transcript || interim_transcript) {
     }
@@ -138,21 +132,24 @@ function script() {
 
 
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
-	/*// Get Class Data using HTTP "POST"
-        var request = new XMLHttpRequest();
-        request.open("POST", 'https://blueberry-custard-21959.herokuapp.com/sendLocation', true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send("login=SAL_CLAY&lat=" + myLat + "&lng=" + myLng);
-        request.onreadystatechange = function() {
-            if (request.readyState == 4 && request.status == 200) {
-                rawJSON = request.responseText;
-                var people = JSON.parse(rawJSON).people;
-                var landmarks = JSON.parse(rawJSON).landmarks;
-                renderMap(people, landmarks);
-            }else{
-                document.getElementById("map").innerHTML = "Loading...";
-            }
-        }*/
+	/// Get Class Data using HTTP "POST"
+        var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://academic-ni.cloud.thingworx.com/Thingworx/Things/NIUtility/Services/CreateApplicationKey",
+  "method": "POST",
+  "headers": {
+    "content-type": "application/json",
+    "accept": "application/json",
+    "appkey": "712ce35d-2511-48da-9c15-a1d45a044f4f"
+  },
+  "processData": false,
+  "data": "{\n\t\"appKeyName\":\"MyKey\",\n\t\"username\":\"ME184\"\n}"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
 }
 
 function getCookie(cname) {
