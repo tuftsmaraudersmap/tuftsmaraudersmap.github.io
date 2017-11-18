@@ -61,7 +61,7 @@ if (!('webkitSpeechRecognition' in window)) {
         interim_transcript += event.results[i][0].transcript;
       }
     }
-    console.log(interim_transcript);
+    //console.log(interim_transcript);
     if (interim_transcript.includes("mischief managed") ) {
         window.location.replace("./index.html");
     }
@@ -101,7 +101,7 @@ var start_recognize = setInterval(function(){
         ignore_onend = false;
         start_timestamp = Math.floor(Date.now());
     }
-}, 10000)
+}, 1000)
 
 
 
@@ -116,36 +116,34 @@ function script() {
 	var secLat = 42.405892;
     var secLng = -71.116562;
 
-    
-    moveOn1();
-
-    function moveOn1() {
-    	var map;
-    	cent = new google.maps.LatLng(secLat, secLng);
-		var initOptions = {
-	            zoom: 15,
-	            center: cent,
-	            mapTypeId: google.maps.MapTypeId.ROADMAP
-	        };
-		map = new google.maps.Map(document.getElementById("map"), initOptions);
-	}
+    var map;
+    cent = new google.maps.LatLng(secLat, secLng);
+	var initOptions = {
+        zoom: 15,
+    	center: cent,
+    	mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	map = new google.maps.Map(document.getElementById("map"), initOptions);
 
 
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API: https://community.thingworx.com/docs/DOC-3315 
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://academic-ni.cloud.thingworx.com/Thingworx/Things/weather_ME184/Properties/temperature?appKey=d0835923-7f86-490f-a542-1f4ae031a374&x-thingworx-session=true",
-            "method": "GET",
-            "headers": {
-                "accept": "application/json",
-            },
-        }
+    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+    var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'weather_ME184'  
+                        + '/Properties/'+ 'temperature'
+                        +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
+    var x = new XMLHttpRequest();
+    var retProp = '';
+    x.open('GET', cors_api_url + thingworxurl);
+    x.onload = x.onerror = function() {
+        retProp = x.responseText;
+        thingworxResults.innerHTML = retProp;
 
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-        });
+    };
+    x.setRequestHeader('accept', 'application/json');
+    x.send();
+    
+
 }
 
 function getCookie(cname) {

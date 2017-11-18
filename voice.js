@@ -113,3 +113,8 @@ stopRecord.onclick = e => {
   	return;
   }
 }
+
+skipSpeach.onclick = e => {
+	document.cookie = "verified=true"
+    window.location.replace("./mapDisplay.html");
+}
