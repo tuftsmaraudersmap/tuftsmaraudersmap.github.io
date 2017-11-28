@@ -79,7 +79,7 @@ if (!('webkitSpeechRecognition' in window)) {
 }
 
 function loadmap() {
-  $('body').fadeOut(1000);
+  $('body').fadeOut(2000);
   document.cookie = "verified=true";
   window.location.replace("./mapDisplay.html");
 }
