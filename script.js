@@ -1,5 +1,6 @@
 var map;
 var infowindow;
+var markerList = [];
 
 var final_transcript = '';
 var recognizing = false;
@@ -62,7 +63,7 @@ if (!('webkitSpeechRecognition' in window)) {
         interim_transcript += event.results[i][0].transcript;
       }
     }
-    //console.log(interim_transcript);
+    //console.log("transpcript: " + interim_transcript);
     if (interim_transcript.includes("mischief managed") ) {
         window.location.replace("./index.html");
     }
@@ -102,8 +103,15 @@ var start_recognize = setInterval(function(){
         ignore_onend = false;
         start_timestamp = Math.floor(Date.now());
     }
-}, 1000)
+}, 1000);
 
+
+var stop_recognize = setInterval(function() {
+    if (recognizing) {
+        recognition.stop();
+        return;
+    }
+}, 10000);
 
 
 ////////////////////////// Map Script Items /////////////////////////////////
@@ -137,6 +145,7 @@ function loadProperties() {
     var retProp = '';
     x.open('GET', cors_api_url + thingworxurl);
     x.onload = x.onerror = function() {
+        //console.log(x.responseText)
         retProp = JSON.parse(x.responseText);
         loadPins(retProp);
     };
@@ -185,7 +194,7 @@ function loadPins(Properties) {
     };
 
     joey = {
-        url: "./images/jeoy.png",
+        url: "./images/joey.png",
         //size: new google.maps.Size(200, 200),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(12, 12) ,
@@ -222,21 +231,33 @@ function loadPins(Properties) {
 
 
 
+
+    //////////// Blake Password ////////////
+
+
+
+
+
+    
+
     /////////// Sports /////////
 
     sportsList = JSON.parse(propList.sports_data);
     for (i = 0; i<sportsList.length; i++) {
         formSportsInfo = "<h3><b>" + sportsList[i].sport + "</b></h3>";
-        setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event", formSportsInfo, sports);
+        setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event: " + sportsList[i].sport, formSportsInfo, sports);
     }
     
     ////////// Joey ///////////
-
-
-
-
+    stopList = JSON.parse(propList.JoeyTracking);
+    for (i = 0; i<stopList.length; i++) {
+        stop = stopList[i];
+        formListInfo = "<h3><p><b>Joey Stop: </b>" + stop.stop_name + "</p></h3>" +
+                       "<p>Next Joey: " + stop.time_until_joey + "</p>";
+        setMarker(stop.location.lat, stop.location.lng, stop.stop_name, formListInfo, joey);
+    }
+    
     ////////// People //////////
-
 
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API:   
@@ -259,19 +280,6 @@ function loadPins(Properties) {
 function loadPeop(retPeop) {
     peopList = retPeop.rows[0];
 
-    var phoneList = [
-        "Phone1",
-        "Phone2",
-        "Phone3",
-        "Phone4",
-        "Phone5",
-        "Phone6",
-        "Phone7",
-        "Phone8",
-        "Phone9",
-        "Phone10"
-    ];
-
     for (var key in peopList) {
 
         if (!peopList.hasOwnProperty(key)) {
@@ -288,26 +296,24 @@ function loadPeop(retPeop) {
         if (!peopList[key]) continue;
 
         personInfo = JSON.parse(peopList[key]);
-        
-        if (!personInfo.inUse) continue;
 
-        console.log(personInfo)
+        if (!personInfo.inUse) continue;
 
         if (personInfo.house == "Ravenclaw") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/ravenclaw.png' height=100>";
+                   "<img src='./images/ravenclaw.png' height=130>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else if (personInfo.house == "Gryffindor") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/gryffindor.png' height=100>";
+                   "<img src='./images/gryffindor.png' height=130>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else if (personInfo.house == "Slytherin") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/slytherin.png' height=100>";
+                   "<img src='./images/slytherin.png' height=130>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else if (personInfo.house == "Hufflepuff") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/hufflepuff.png' height=100>";
+                   "<img src='./images/hufflepuff.png' height=130>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else {}
     }
@@ -317,12 +323,19 @@ function loadPeop(retPeop) {
 
 function setMarker(lat, lng, name, infoHTML, pic) {
     var location = new google.maps.LatLng(lat, lng);
+
+    if (markerList[name]) {
+        markerList[name].setPosition(location);
+        return;
+    }
+        
     var marker = new google.maps.Marker({
         position: location,
         title: name,
         icon: pic,
         info: infoHTML
     });
+    markerList[name] = marker;
     marker.setMap(map);
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(marker.info);
