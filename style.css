@@ -4,17 +4,39 @@ html {
         font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
         width: 100%;
 }
-
 body {
         height: 100%;
+        width: 100%;
         margin: 0px;
         padding: 0px;
 }
-
-h2 {
-		padding-left: 20px;
+#content {
+    position: absolute;
+        top: 50%;
+        left: 50%;
+    width: auto;
+    height: auto;
+    
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
-
+h2 {
+    font-family: 'IM Fell French Canon', serif;
+    font-weight: 300;
+    font-size: 4em;
+    padding: 0;
+    margin: 0;
+    margin: 10px 0 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 1200px;
+    animation: fade 4s steps(80, end); 
+}
+@keyframes fade{ 
+    from { 
+        width: 0; 
+    } 
+}
 #interim_span { 
 		margin-top: 10px;
 		margin-left: 30px;
@@ -47,4 +69,11 @@ h2 {
 
 #skipSpeach {
 		width: 135px;
+}
+button {
+    font-family: 'IM Fell French Canon', serif;
+    padding: 0px 10px 0px 10px;
+    font-size: 1.5em;
+    border-radius: 5px;
+    cursor: pointer;
 }
