@@ -146,12 +146,12 @@ function loadProperties() {
 
 function loadPins(Properties) {
     propList = Properties.rows[0];
-    console.log(propList);
+//    console.log(propList);
 
 
     ///// Set up icons /////
 
-    var footsteps = {
+    footsteps = {
         url: "./images/footsteps.png",
         //size: new google.maps.Size(200, 200),
         origin: new google.maps.Point(0, 0),
@@ -159,7 +159,7 @@ function loadPins(Properties) {
         scaledSize: new google.maps.Size(24, 24)
     };
 
-    var forkKnife = {
+    forkKnife = {
         url: "./images/forkKnife.png",
         //size: new google.maps.Size(512, 512),
         origin: new google.maps.Point(0, 0),
@@ -168,7 +168,7 @@ function loadPins(Properties) {
 
     };
 
-    var sports = {
+    sports = {
         url: "./images/sports.png",
         //size: new google.maps.Size(512, 512),
         origin: new google.maps.Point(0, 0),
@@ -176,7 +176,7 @@ function loadPins(Properties) {
         scaledSize: new google.maps.Size(24, 24)
     };
 
-    var workstation = {
+    workstation = {
         url: "./images/workstation.png",
         //size: new google.maps.Size(1600, 1600),
         origin: new google.maps.Point(0, 0),
@@ -184,7 +184,7 @@ function loadPins(Properties) {
         scaledSize: new google.maps.Size(24, 24)
     };
 
-    var joey = {
+    joey = {
         url: "./images/jeoy.png",
         //size: new google.maps.Size(200, 200),
         origin: new google.maps.Point(0, 0),
@@ -192,7 +192,7 @@ function loadPins(Properties) {
         scaledSize: new google.maps.Size(24, 24)   
     };
 
-    var andRoom = {
+    andRoom = {
         url: "./images/classrooms.png",
         //size: new google.maps.Size(200, 200),
         origin: new google.maps.Point(0, 0),
@@ -234,12 +234,70 @@ function loadPins(Properties) {
 
 
 
+
     ////////// People //////////
 
 
-    ////////////////////////////
-    ////////////////////////////
-    ////////////////////////////
+    // API Key: d0835923-7f86-490f-a542-1f4ae031a374
+    // Documentation for Thingworx REST API:   
+
+    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+    var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersTest_ME184'  
+                        + '/Properties/'
+                        +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
+    var x = new XMLHttpRequest();
+    var retPeop = '';
+    x.open('GET', cors_api_url + thingworxurl);
+    x.onload = x.onerror = function() {
+        retPeop = JSON.parse(x.responseText);
+        loadPeop(retPeop);
+    };
+    x.setRequestHeader('accept', 'application/json');
+    x.send();
+}
+
+function loadPeop(retPeop) {
+    peopList = retPeop.rows[0];
+
+    var phoneList = [
+        "Phone1",
+        "Phone2",
+        "Phone3",
+        "Phone4",
+        "Phone5",
+        "Phone6",
+        "Phone7",
+        "Phone8",
+        "Phone9",
+        "Phone10"
+    ];
+
+    console.log(peopList);
+
+    for (i = 0; i<phoneList.length; i++) {
+        phone = phoneList[i];
+        if (!peopList[phone]) {
+            continue;
+        }
+        personInfo = JSON.parse(peopList[phone]);
+        if (personInfo.house == "Ravenclaw") {
+            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+                   "<img src='./images/ravenclaw.png' height=100>";
+            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
+        } else if (personInfo.house == "Gryffindor") {
+            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+                   "<img src='./images/Gryffindor.png' height=100>";
+            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
+        } else if (personInfo.house == "Slytherin") {
+            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+                   "<img src='./images/slytherin.png' height=100>";
+            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
+        } else if (personInfo.house == "Hufflepuff") {
+            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+                   "<img src='./images/hugglepuff.png' height=100>";
+            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
+        } else {}
+    }
 }
 
 //////////////// Utilities ////////////////
@@ -305,4 +363,4 @@ var updateMap = setInterval(function(){
     */
     console.log("updating");
     loadProperties();
-}, 5000)
+}, 20000)
