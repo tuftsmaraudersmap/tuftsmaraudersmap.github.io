@@ -272,21 +272,34 @@ function loadPeop(retPeop) {
         "Phone10"
     ];
 
-    console.log(peopList);
+    for (var key in peopList) {
 
-    for (i = 0; i<phoneList.length; i++) {
-        phone = phoneList[i];
-        if (!peopList[phone]) {
+        if (!peopList.hasOwnProperty(key)) {
             continue;
         }
-        personInfo = JSON.parse(peopList[phone]);
+
+        if (key == "description" ||
+            key == "name" ||
+            key == "tags" ||
+            key == "thingTemplate")      {
+            continue;
+        }       
+
+        if (!peopList[key]) continue;
+
+        personInfo = JSON.parse(peopList[key]);
+        
+        if (!personInfo.inUse) continue;
+
+        console.log(personInfo)
+
         if (personInfo.house == "Ravenclaw") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
                    "<img src='./images/ravenclaw.png' height=100>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else if (personInfo.house == "Gryffindor") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/Gryffindor.png' height=100>";
+                   "<img src='./images/gryffindor.png' height=100>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else if (personInfo.house == "Slytherin") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
@@ -294,7 +307,7 @@ function loadPeop(retPeop) {
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else if (personInfo.house == "Hufflepuff") {
             info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/hugglepuff.png' height=100>";
+                   "<img src='./images/hufflepuff.png' height=100>";
             setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
         } else {}
     }
