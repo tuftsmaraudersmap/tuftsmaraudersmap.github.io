@@ -25,8 +25,8 @@ h2 {
     font-weight: 300;
     font-size: 4em;
     padding: 0;
-    margin: 0;
-    margin: 10px 0 0 10px;
+}
+#content h2 {
     white-space: nowrap;
     overflow: hidden;
     width: 1200px;
@@ -35,17 +35,16 @@ h2 {
 @keyframes type { 
     from { width: 0; } 
 }
-h3 {
-    font-family: 'IM Fell French Canon', serif;
-    font-style: italic;
-}
 #generated {
-    margin-top: 40px;
     text-align: center;
     width: auto;
     opacity: 1;
     animation: fade 1s steps(10, end);
 }
+h3 {
+    font-family: 'IM Fell French Canon', serif;
+}
+#generated h3 { font-style: italic; }
 @keyframes fade { 
     from { opacity: 0; } 
 }
@@ -64,14 +63,19 @@ h3 {
 }
 
 #title {
-		height: 15%;
-		margin: auto;
-		width: 700px;
+    position: relative;
+	height: 15%;
 }
-
+#title h2 {
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/*
 #titleImage {
 		width: 700px;
-}
+}*/
 
 .buttons {
 		width: 50px;
