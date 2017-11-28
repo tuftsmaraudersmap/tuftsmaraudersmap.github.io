@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-
 <html>
+<head>
+    <title>Marauder's Map</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=IM+Fell+French+Canon" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
 
-        <head>
-                <title>Marauder's Map</title>
-                <meta name="viewport" content="initial-scale=1.0" />
-                <meta charset="utf-8">
-                <link rel="stylesheet" href="style.css" />
-        </head>
+</head>
 <body>
-    <h2 id=header>Press the button and say the password</h2>
-        <div>
-			<p>
-				<button id=startRecord class="buttons">start</button>
-				<button id=stopRecord class="buttons" disabled>stop</button>
-			</p>
-			<p>
-				<button id=skipSpeach class="buttons">Skip To Map</button>		
-		</div>
-		<div>
-			<h3 id=interim_span></h3>
-			<h3 id=final_span></h3>
-		</div>
-<script type="text/javascript" src="voice.js"></script>
+    <div id="content">
+        <h2 id=header>Press the button and say the password</h2>
+            <div id="buttons">
+    			<p>
+    				<button id=startRecord>start</button>
+    				<button id=stopRecord disabled>stop</button>
+    			</p>
+    			<p>
+    				<button id=skipSpeach>skip to map</button>	
+                </p>	
+            </div>
+            <div id="generated">
+    			<h3 id=interim_span></h3>
+    			<h3 id=final_span></h3>
+            </div>
+`   </div>
+
+    <script type="text/javascript" src="voice.js"></script>
 </body>
 </html>
