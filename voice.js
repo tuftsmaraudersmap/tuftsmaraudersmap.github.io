@@ -70,13 +70,18 @@ if (!('webkitSpeechRecognition' in window)) {
     	interim_transcript.includes( "I solemnly swear that I am upto no good") || 
     	interim_transcript .includes("I solemnly swear that I am up to no good") ||
     	interim_transcript.includes("I solemnly swear I am up to no good")) {
-    	document.cookie = "verified=true"
-    	window.location.replace("./mapDisplay.html");
-	}
+      	loadmap();
+	  }
 
     if (final_transcript || interim_transcript) {
     }
   };
+}
+
+function loadmap() {
+  $('body').fadeOut(1000);
+  document.cookie = "verified=true";
+  window.location.replace("./mapDisplay.html");
 }
 
 function upgrade() {
@@ -115,6 +120,5 @@ stopRecord.onclick = e => {
 }
 
 skipSpeach.onclick = e => {
-	document.cookie = "verified=true"
-    window.location.replace("./mapDisplay.html");
+	loadmap();
 }
