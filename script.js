@@ -218,7 +218,7 @@ function loadPins(Properties) {
     formRoomList = formatRoomList(roomList);
     setMarker(42.406173, -71.116792, "Anderson Rooms Status List", formRoomList, andRoom);
     
-    //////////// Blake ////////////
+    //////////// Blake /////////
 
 
 
@@ -230,12 +230,16 @@ function loadPins(Properties) {
         setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event", formSportsInfo, sports);
     }
     
-
     ////////// Joey ///////////
 
 
 
     ////////// People //////////
+
+
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
 }
 
 //////////////// Utilities ////////////////
