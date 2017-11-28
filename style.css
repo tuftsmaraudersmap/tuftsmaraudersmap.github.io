@@ -30,12 +30,24 @@ h2 {
     white-space: nowrap;
     overflow: hidden;
     width: 1200px;
-    animation: fade 4s steps(80, end); 
+    animation: type 4s steps(80, end); 
 }
-@keyframes fade{ 
-    from { 
-        width: 0; 
-    } 
+@keyframes type { 
+    from { width: 0; } 
+}
+h3 {
+    font-family: 'IM Fell French Canon', serif;
+    font-style: italic;
+}
+#generated {
+    margin-top: 40px;
+    text-align: center;
+    width: auto;
+    opacity: 1;
+    animation: fade 1s steps(10, end);
+}
+@keyframes fade { 
+    from { opacity: 0; } 
 }
 #interim_span { 
 		margin-top: 10px;
@@ -72,7 +84,8 @@ h2 {
 }
 button {
     font-family: 'IM Fell French Canon', serif;
-    padding: 0px 10px 0px 10px;
+    padding: 5px 10px 5px 10px;
+    line-height: 1em;
     font-size: 1.5em;
     border-radius: 5px;
     cursor: pointer;
