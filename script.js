@@ -389,4 +389,4 @@ var updateMap = setInterval(function(){
     */
     console.log("updating");
     loadProperties();
-}, 20000)
+}, 10000)
