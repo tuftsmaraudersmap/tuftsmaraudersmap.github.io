@@ -168,6 +168,14 @@ function loadPins(Properties) {
         scaledSize: new google.maps.Size(24, 24)
     };
 
+    RofRLock = {
+        url: "./images/rofr.png",
+        //size: new google.maps.Size(200, 200),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12),
+        scaledSize: new google.maps.Size(24, 24)
+    };
+
     forkKnife = {
         url: "./images/forkKnife.png",
         //size: new google.maps.Size(512, 512),
@@ -233,12 +241,21 @@ function loadPins(Properties) {
 
 
     //////////// Blake Password ////////////
+    password = propList.RofR_Password
+    setMarker(42.405855, -71.116689, "Room of Requirement", password, RofRLock);
+    if (map.getZoom() > 21) {
+        markerList["Room of Requirement"].setVisible(true);
+    }else {
+        markerList["Room of Requirement"].setVisible(false);
+    }
+    map.addListener('zoom_changed', function() {
+        if (map.getZoom() > 21) {
+            markerList["Room of Requirement"].setVisible(true);
+        } else {
+            markerList["Room of Requirement"].setVisible(false);
+        }
+    });
 
-
-
-
-
-    
 
     /////////// Sports /////////
 
