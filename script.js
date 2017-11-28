@@ -1,11 +1,9 @@
-var map;
-var infowindow;
-var markerList = [];
-
 var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+
+document.cookie = "verified=false";
 
 if (!('webkitSpeechRecognition' in window)) {
   upgrade();
@@ -17,19 +15,19 @@ if (!('webkitSpeechRecognition' in window)) {
     recognizing = true;
   };
   recognition.onerror = function(event) {
-    console.log(event);
+  	console.log(event);
     if (event.error == 'no-speech') {
-        console.log('no-speech')
+    	console.log('no-speech')
       ignore_onend = true;
     }
     if (event.error == 'audio-capture') {
-        console.log('no-mirophone')
+    	console.log('no-mirophone')
       ignore_onend = true;
     }
     if (event.error == 'not-allowed') {
       if (event.timeStamp - start_timestamp < 100) {
-        console.log(event.timeStamp);
-        console.log(start_timestamp);
+      	console.log(event.timeStamp);
+      	console.log(start_timestamp);
         console.log('info-denied');
       } else {
         console.log('info_denied-notallowed');
@@ -38,7 +36,6 @@ if (!('webkitSpeechRecognition' in window)) {
     }
   };
   recognition.onend = function() {
-    console.log("ending")
     recognizing = false;
     if (ignore_onend) {
       return;
@@ -58,28 +55,41 @@ if (!('webkitSpeechRecognition' in window)) {
     var interim_transcript = '';
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
-        final_transcript += "";
+        final_transcript += event.results[i][0].transcript;
       } else {
         interim_transcript += event.results[i][0].transcript;
       }
     }
-    //console.log("transpcript: " + interim_transcript);
-    if (interim_transcript.includes("mischief managed") ) {
-        window.location.replace("./index.html");
-    }
+    final_transcript = final_transcript;
+    final_span.innerHTML = linebreak(final_transcript);
+    interim_span.innerHTML = linebreak(interim_transcript);
+
+    if (interim_transcript.includes("I solemnly swear that I'm upto no good") || 
+    	interim_transcript.includes("I solemnly swear that I'm up to no good") ||
+    	interim_transcript.includes("I solemnly swear I'm up to no good") ||
+    	interim_transcript.includes( "I solemnly swear that I am upto no good") || 
+    	interim_transcript .includes("I solemnly swear that I am up to no good") ||
+    	interim_transcript.includes("I solemnly swear I am up to no good")) {
+      	loadmap();
+	  }
+
     if (final_transcript || interim_transcript) {
     }
   };
 }
 
-
-function upgrade() {
-    alert('Please use a recent version of the Google Chrome browser with this webpage.\n\nOther browsers do not support the speech API used in this site')
-    startRecord.disabled = true;
-    stopRecord.disabled=true;
-    header.innerHTML = "Your browser does not support the speech API! :("
+function loadmap() {
+  $('body').fadeOut(1000);
+  document.cookie = "verified=true";
+  window.location.replace("./mapDisplay.html");
 }
 
+function upgrade() {
+	alert('Please use a recent version of the Google Chrome browser with this webpage.\n\nOther browsers do not support the speech API used in this site')
+	startRecord.disabled = true;
+  	stopRecord.disabled=true;
+  	header.innerHTML = "Your browser does not support the speech API! :("
+}
 
 var two_line = /\n\n/g;
 var one_line = /\n/g;
@@ -87,324 +97,28 @@ function linebreak(s) {
   return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
 }
 
-console.log('loaded')
-final_transcript = '';
-recognition.lang = 'en-US';
-recognition.start();
-ignore_onend = false;
-start_timestamp = Math.floor(Date.now());
-
-var start_recognize = setInterval(function(){
-    if (!recognizing) {
-        console.log('loaded')
-        final_transcript = '';
-        recognition.lang = 'en-US';
-        recognition.start();
-        ignore_onend = false;
-        start_timestamp = Math.floor(Date.now());
-    }
-}, 1000);
-
-
-var stop_recognize = setInterval(function() {
-    if (recognizing) {
-        recognition.stop();
-        return;
-    }
-}, 10000);
-
-
-////////////////////////// Map Script Items /////////////////////////////////
-
-function script(initLat, initLng, z) {
-    var verified = getCookie("verified");
-    if (verified == "false") {
-        window.location.replace("./index.html");
-    }
-
-    cent = new google.maps.LatLng(initLat, initLng);
-	var initOptions = {
-        zoom: z,
-    	center: cent,
-    	mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: [{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#f0ebdd"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#d6c69f"}]},{"featureType":"poi.school","elementType":"geometry.fill","stylers":[{"color":"#d6c69f"}]},{"featureType":"poi.school","elementType":"labels.icon","stylers":[{"visibility":"simplified"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels","stylers":[{"visibility":"off"}]}]
-	};
-	map = new google.maps.Map(document.getElementById("map"), initOptions);
-    infowindow = new google.maps.InfoWindow();
-
-    loadProperties();
+startRecord.onclick = e => {
+  startRecord.disabled = true;
+  stopRecord.disabled=false;
+  final_transcript = '';
+  recognition.lang = 'en-US';
+  recognition.start();
+  ignore_onend = false;
+  final_span.innerHTML = '';
+  interim_span.innerHTML = '';
+  start_timestamp = event.timeStamp;
 }
 
-function loadProperties() {
-    // API Key: d0835923-7f86-490f-a542-1f4ae031a374
-    // Documentation for Thingworx REST API:   
-    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
-    var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersData_ME184'  
-                        + '/Properties/'
-                        +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
-    var x = new XMLHttpRequest();
-    var retProp = '';
-    x.open('GET', cors_api_url + thingworxurl);
-    x.onload = x.onerror = function() {
-        //console.log(x.responseText)
-        retProp = JSON.parse(x.responseText);
-        loadPins(retProp);
-    };
-    x.setRequestHeader('accept', 'application/json');
-    x.send();
+
+stopRecord.onclick = e => {
+  startRecord.disabled = false;
+  stopRecord.disabled=true;
+  if (recognizing) {
+    recognition.stop();
+  	return;
+  }
 }
 
-function loadPins(Properties) {
-    propList = Properties.rows[0];
-//    console.log(propList);
-
-
-    ///// Set up icons /////
-
-    footsteps = {
-        url: "./images/footsteps.png",
-        //size: new google.maps.Size(200, 200),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12),
-        scaledSize: new google.maps.Size(24, 24)
-    };
-
-    RofRLock = {
-        url: "./images/rofr.png",
-        //size: new google.maps.Size(200, 200),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12),
-        scaledSize: new google.maps.Size(24, 24)
-    };
-
-    forkKnife = {
-        url: "./images/forkKnife.png",
-        //size: new google.maps.Size(512, 512),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12),
-        scaledSize: new google.maps.Size(24, 24)
-
-    };
-
-    sports = {
-        url: "./images/sports.png",
-        //size: new google.maps.Size(512, 512),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12),
-        scaledSize: new google.maps.Size(24, 24)
-    };
-
-    workstation = {
-        url: "./images/workstation.png",
-        //size: new google.maps.Size(1600, 1600),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12),
-        scaledSize: new google.maps.Size(24, 24)
-    };
-
-    joey = {
-        url: "./images/joey.png",
-        //size: new google.maps.Size(200, 200),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12) ,
-        scaledSize: new google.maps.Size(24, 24)   
-    };
-
-    andRoom = {
-        url: "./images/classrooms.png",
-        //size: new google.maps.Size(200, 200),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(12, 12) ,
-        scaledSize: new google.maps.Size(24, 24)   
-    };
-
-    /// Food Menus ///
-    //---> Dewick -- ToDo: pull info from carm, anderson 208, 
-
-    dewickMen = JSON.parse(propList.Dewick_menu);
-    formDewickMen = formatMenu("Dewick", dewickMen);
-    setMarker(42.405337, -71.121225, "Dewick Daily Menu", formDewickMen, forkKnife);
-
-    //---> Carm
-    carmMen = JSON.parse(propList.Carm_menu);
-    formCarmMen = formatMenu("Carmichael", carmMen);
-    setMarker(42.409214, -71.122642, "Carmichael Daily Menu", formCarmMen, forkKnife);
-
-    //////////// Anderson Rooms //////////////
-    
-    roomList = JSON.parse(propList.Anderson_Classrooms);
-    formRoomList = formatRoomList(roomList);
-    setMarker(42.406173, -71.116792, "Anderson Rooms Status List", formRoomList, andRoom);
-    
-    //////////// Blake /////////
-
-
-
-
-    //////////// Blake Password ////////////
-    password = propList.RofR_Password
-    setMarker(42.405855, -71.116689, "Room of Requirement", password, RofRLock);
-    if (map.getZoom() > 21) {
-        markerList["Room of Requirement"].setVisible(true);
-    }else {
-        markerList["Room of Requirement"].setVisible(false);
-    }
-    map.addListener('zoom_changed', function() {
-        if (map.getZoom() > 21) {
-            markerList["Room of Requirement"].setVisible(true);
-        } else {
-            markerList["Room of Requirement"].setVisible(false);
-        }
-    });
-
-
-    /////////// Sports /////////
-
-    sportsList = JSON.parse(propList.sports_data);
-    for (i = 0; i<sportsList.length; i++) {
-        formSportsInfo = "<h3><b>" + sportsList[i].sport + "</b></h3>";
-        setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event: " + sportsList[i].sport, formSportsInfo, sports);
-    }
-    
-    ////////// Joey ///////////
-    stopList = JSON.parse(propList.JoeyTracking);
-    for (i = 0; i<stopList.length; i++) {
-        stop = stopList[i];
-        formListInfo = "<h3><p><b>Joey Stop: </b>" + stop.stop_name + "</p></h3>" +
-                       "<p>Next Joey: " + stop.time_until_joey + "</p>";
-        setMarker(stop.location.lat, stop.location.lng, stop.stop_name, formListInfo, joey);
-    }
-    
-    ////////// People //////////
-
-    // API Key: d0835923-7f86-490f-a542-1f4ae031a374
-    // Documentation for Thingworx REST API:   
-
-    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
-    var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersTest_ME184'  
-                        + '/Properties/'
-                        +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
-    var x = new XMLHttpRequest();
-    var retPeop = '';
-    x.open('GET', cors_api_url + thingworxurl);
-    x.onload = x.onerror = function() {
-        retPeop = JSON.parse(x.responseText);
-        loadPeop(retPeop);
-    };
-    x.setRequestHeader('accept', 'application/json');
-    x.send();
+skipSpeach.onclick = e => {
+	loadmap();
 }
-
-function loadPeop(retPeop) {
-    peopList = retPeop.rows[0];
-
-    for (var key in peopList) {
-
-        if (!peopList.hasOwnProperty(key)) {
-            continue;
-        }
-
-        if (key == "description" ||
-            key == "name" ||
-            key == "tags" ||
-            key == "thingTemplate")      {
-            continue;
-        }       
-
-        if (!peopList[key]) continue;
-
-        personInfo = JSON.parse(peopList[key]);
-
-        if (!personInfo.inUse) continue;
-
-        if (personInfo.house == "Ravenclaw") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/ravenclaw.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else if (personInfo.house == "Gryffindor") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/gryffindor.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else if (personInfo.house == "Slytherin") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/slytherin.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else if (personInfo.house == "Hufflepuff") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
-                   "<img src='./images/hufflepuff.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else {}
-    }
-}
-
-//////////////// Utilities ////////////////
-
-function setMarker(lat, lng, name, infoHTML, pic) {
-    var location = new google.maps.LatLng(lat, lng);
-
-    if (markerList[name]) {
-        markerList[name].setPosition(location);
-        return;
-    }
-        
-    var marker = new google.maps.Marker({
-        position: location,
-        title: name,
-        icon: pic,
-        info: infoHTML
-    });
-    markerList[name] = marker;
-    marker.setMap(map);
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(marker.info);
-        infowindow.open(map, marker);
-    });
-}
-
-function formatMenu(dHall, menu) {
-    var toRet = "<h3><b>" + dHall + " Menu: </b></h3>" +
-                "<p><b>Breakfast: </b>" + menu.Breakfast + "</p>" +
-                "<p><b>Lunch: </b>" + menu.Lunch + "</p>" +
-                "<p><b>Dinner: </b>" + menu.Dinner + "</p>";
-    return toRet;
-}
-
-function formatRoomList(roomList) {
-    toRet = "<h3><b>Anderson Rooms:</b></h3>";
-
-    for (i = 0; i<roomList.length; i++) {
-        if (roomList[i].Occupied) {
-            toRet += "<p><b><font color='red'>" + roomList[i].Name + "</font></b></p>";
-        } else {
-            toRet += "<p><b><font color='green'>" + roomList[i].Name + "</font></b></p>";
-        }
-    }
-
-    return toRet;
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-var updateMap = setInterval(function(){
-    /*var lat = map.getCenter().lat();
-    var lng = map.getCenter().lng();
-    var z = map.getZoom();
-    script(lat, lng, z);
-    */
-    console.log("updating");
-    loadProperties();
-}, 20000)
