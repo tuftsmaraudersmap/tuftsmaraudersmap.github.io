@@ -407,4 +407,4 @@ var updateMap = setInterval(function(){
     */
     console.log("updating");
     loadProperties();
-}, 10000)
+}, 20000)
