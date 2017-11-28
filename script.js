@@ -1,4 +1,5 @@
 var map;
+var infowindow;
 
 var final_transcript = '';
 var recognizing = false;
@@ -107,43 +108,173 @@ var start_recognize = setInterval(function(){
 
 ////////////////////////// Map Script Items /////////////////////////////////
 
-function script() {
+function script(initLat, initLng, z) {
     var verified = getCookie("verified");
     if (verified == "false") {
         window.location.replace("./index.html");
     }
 
-	var secLat = 42.405892;
-    var secLng = -71.116562;
-
-    var map;
-    cent = new google.maps.LatLng(secLat, secLng);
+    cent = new google.maps.LatLng(initLat, initLng);
 	var initOptions = {
-        zoom: 15,
+        zoom: z,
     	center: cent,
     	mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById("map"), initOptions);
+    infowindow = new google.maps.InfoWindow();
 
+    loadProperties();
+}
 
+function loadProperties() {
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
-    // Documentation for Thingworx REST API: https://community.thingworx.com/docs/DOC-3315 
+    // Documentation for Thingworx REST API:   
     var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
-    var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'weather_ME184'  
-                        + '/Properties/'+ 'temperature'
+    var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersData_ME184'  
+                        + '/Properties/'
                         +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
     var x = new XMLHttpRequest();
     var retProp = '';
     x.open('GET', cors_api_url + thingworxurl);
     x.onload = x.onerror = function() {
-        retProp = x.responseText;
-        thingworxResults.innerHTML = retProp;
-
+        retProp = JSON.parse(x.responseText);
+        loadPins(retProp);
     };
     x.setRequestHeader('accept', 'application/json');
     x.send();
+}
+
+function loadPins(Properties) {
+    propList = Properties.rows[0];
+    console.log(propList);
+
+
+    ///// Set up icons /////
+
+    var footsteps = {
+        url: "./images/footsteps.png",
+        //size: new google.maps.Size(200, 200),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12),
+        scaledSize: new google.maps.Size(24, 24)
+    };
+
+    var forkKnife = {
+        url: "./images/forkKnife.png",
+        //size: new google.maps.Size(512, 512),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12),
+        scaledSize: new google.maps.Size(24, 24)
+
+    };
+
+    var sports = {
+        url: "./images/sports.png",
+        //size: new google.maps.Size(512, 512),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12),
+        scaledSize: new google.maps.Size(24, 24)
+    };
+
+    var workstation = {
+        url: "./images/workstation.png",
+        //size: new google.maps.Size(1600, 1600),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12),
+        scaledSize: new google.maps.Size(24, 24)
+    };
+
+    var joey = {
+        url: "./images/jeoy.png",
+        //size: new google.maps.Size(200, 200),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12) ,
+        scaledSize: new google.maps.Size(24, 24)   
+    };
+
+    var andRoom = {
+        url: "./images/classrooms.png",
+        //size: new google.maps.Size(200, 200),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(12, 12) ,
+        scaledSize: new google.maps.Size(24, 24)   
+    };
+
+    /// Food Menus ///
+    //---> Dewick -- ToDo: pull info from carm, anderson 208, 
+
+    dewickMen = JSON.parse(propList.Dewick_menu);
+    formDewickMen = formatMenu("Dewick", dewickMen);
+    setMarker(42.405337, -71.121225, "Dewick Daily Menu", formDewickMen, forkKnife);
+
+    //---> Carm
+    carmMen = JSON.parse(propList.Carm_menu);
+    formCarmMen = formatMenu("Carmichael", carmMen);
+    setMarker(42.409214, -71.122642, "Carmichael Daily Menu", formCarmMen, forkKnife);
+
+    //////////// Anderson Rooms //////////////
+    
+    roomList = JSON.parse(propList.Anderson_Classrooms);
+    formRoomList = formatRoomList(roomList);
+    setMarker(42.406173, -71.116792, "Anderson Rooms Status List", formRoomList, andRoom);
+    
+    //////////// Blake ////////////
+
+
+
+    /////////// Sports /////////
+
+    sportsList = JSON.parse(propList.sports_data);
+    for (i = 0; i<sportsList.length; i++) {
+        formSportsInfo = "<h3><b>" + sportsList[i].sport + "</b></h3>";
+        setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event", formSportsInfo, sports);
+    }
     
 
+    ////////// Joey ///////////
+
+
+
+    ////////// People //////////
+}
+
+//////////////// Utilities ////////////////
+
+function setMarker(lat, lng, name, infoHTML, pic) {
+    var location = new google.maps.LatLng(lat, lng);
+    var marker = new google.maps.Marker({
+        position: location,
+        title: name,
+        icon: pic,
+        info: infoHTML
+    });
+    marker.setMap(map);
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(marker.info);
+        infowindow.open(map, marker);
+    });
+}
+
+function formatMenu(dHall, menu) {
+    var toRet = "<h3><b>" + dHall + " Menu: </b></h3>" +
+                "<p><b>Breakfast: </b>" + menu.Breakfast + "</p>" +
+                "<p><b>Lunch: </b>" + menu.Lunch + "</p>" +
+                "<p><b>Dinner: </b>" + menu.Dinner + "</p>";
+    return toRet;
+}
+
+function formatRoomList(roomList) {
+    toRet = "<h3><b>Anderson Rooms:</b></h3>";
+
+    for (i = 0; i<roomList.length; i++) {
+        if (roomList[i].Occupied) {
+            toRet += "<p><b><font color='red'>" + roomList[i].Name + "</font></b></p>";
+        } else {
+            toRet += "<p><b><font color='green'>" + roomList[i].Name + "</font></b></p>";
+        }
+    }
+
+    return toRet;
 }
 
 function getCookie(cname) {
@@ -161,3 +292,13 @@ function getCookie(cname) {
     }
     return "";
 }
+
+var updateMap = setInterval(function(){
+    /*var lat = map.getCenter().lat();
+    var lng = map.getCenter().lng();
+    var z = map.getZoom();
+    script(lat, lng, z);
+    */
+    console.log("updating");
+    loadProperties();
+}, 5000)
