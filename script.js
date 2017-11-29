@@ -259,19 +259,6 @@ function loadPins(Properties) {
 
     password = propList.RofR_Password
     setMarker(42.405855, -71.116689, "Room of Requirement", password, RofRLock);
-    if (map.getZoom() > 21) {
-        markerList["Room of Requirement"].setVisible(true);
-    }else {
-        markerList["Room of Requirement"].setVisible(false);
-    }
-    map.addListener('zoom_changed', function() {
-        if (map.getZoom() > 21) {
-            markerList["Room of Requirement"].setVisible(true);
-        } else {
-            markerList["Room of Requirement"].setVisible(false);
-        }
-    });
-
 
     /////////// Sports /////////
 
