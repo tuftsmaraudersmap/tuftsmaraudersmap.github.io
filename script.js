@@ -221,29 +221,36 @@ function loadPins(Properties) {
     /// Food Menus ///
     //---> Dewick -- ToDo: pull info from carm, anderson 208, 
 
-    dewickMen = JSON.parse(propList.Dewick_menu);
-    formDewickMen = formatMenu("Dewick", dewickMen);
-    setMarker(42.405337, -71.121225, "Dewick Daily Menu", formDewickMen, forkKnife);
+    if (propList.Dewick_menu) {
+        dewickMen = JSON.parse(propList.Dewick_menu);
+        formDewickMen = formatMenu("Dewick", dewickMen);
+        setMarker(42.405337, -71.121225, "Dewick Daily Menu", formDewickMen, forkKnife);
+    }
 
     //---> Carm
-    carmMen = JSON.parse(propList.Carm_menu);
-    formCarmMen = formatMenu("Carmichael", carmMen);
-    setMarker(42.409214, -71.122642, "Carmichael Daily Menu", formCarmMen, forkKnife);
+    if (propList.Carm_menu) {
+        carmMen = JSON.parse(propList.Carm_menu);
+        formCarmMen = formatMenu("Carmichael", carmMen);
+        setMarker(42.409214, -71.122642, "Carmichael Daily Menu", formCarmMen, forkKnife);
+    }
 
     //////////// Anderson Rooms //////////////
-    
-    roomList = JSON.parse(propList.Anderson_Classrooms);
-    formRoomList = formatRoomList(roomList);
-    setMarker(42.406173, -71.116792, "Anderson Rooms Status List", formRoomList, andRoom);
-    
+
+    if (propList.Anderson_Classrooms) {
+        roomList = JSON.parse(propList.Anderson_Classrooms);
+        formRoomList = formatRoomList(roomList);
+        setMarker(42.406173, -71.116792, "Anderson Rooms Status List", formRoomList, andRoom);
+    }
+
     //////////// Blake /////////
+    if (propList.Blake_Availability) {
+        bakeAvail = JSON.parse(propList.Blake_Availability);
+        formBlakeAvail = "<h3>Blake Pearlman Lab</h3>" + 
+                         "<p>Workstations Available: " + blakeAvail.workstations + "</p>"
+                         "<p>Chairs Available: " + blakeAvail.chairs + "</p>";
 
-    bakeAvail = JSON.parse(propList.Blake_Availability);
-    formBlakeAvail = "<h3>Blake Pearlman Lab</h3>" + 
-                     "<p>Workstations Available: " + blakeAvail.workstations + "</p>"
-                     "<p>Chairs Available: " + blakeAvail.chairs + "</p>";
-
-    setMarker(42.405964, -71.116707, "Blake Availability", formBlakeAvail, workstation)
+        setMarker(42.405964, -71.116707, "Blake Availability", formBlakeAvail, workstation)
+    }
 
 
     //////////// Blake Password ////////////
@@ -266,19 +273,24 @@ function loadPins(Properties) {
 
     /////////// Sports /////////
 
-    sportsList = JSON.parse(propList.sports_data);
-    for (i = 0; i<sportsList.length; i++) {
-        formSportsInfo = "<h3><b>" + sportsList[i].sport + "</b></h3>";
-        setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event: " + sportsList[i].sport, formSportsInfo, sports);
+    if (propList.sports_data) {
+        sportsList = JSON.parse(propList.sports_data);
+        for (i = 0; i<sportsList.length; i++) {
+            formSportsInfo = "<h3><b>" + sportsList[i].sport + "</b></h3>";
+            setMarker(sportsList[i].location.lat, sportsList[i].location.lng, "Sports Event: " + sportsList[i].sport, formSportsInfo, sports);
+        }
     }
     
     ////////// Joey ///////////
-    stopList = JSON.parse(propList.JoeyTracking);
-    for (i = 0; i<stopList.length; i++) {
-        stop = stopList[i];
-        formListInfo = "<h3><p><b>Joey Stop: </b>" + stop.stop_name + "</p></h3>" +
-                       "<p>Next Joey: " + stop.time_until_joey + "</p>";
-        setMarker(stop.location.lat, stop.location.lng, stop.stop_name, formListInfo, joey);
+
+    if (propList.JoeyTracking) {
+        stopList = JSON.parse(propList.JoeyTracking);
+        for (i = 0; i<stopList.length; i++) {
+            stop = stopList[i];
+            formListInfo = "<h3><p><b>Joey Stop: </b>" + stop.stop_name + "</p></h3>" +
+                           "<p>Next Joey: " + stop.time_until_joey + "</p>";
+            setMarker(stop.location.lat, stop.location.lng, stop.stop_name, formListInfo, joey);
+        }
     }
     
     ////////// People //////////
@@ -350,6 +362,10 @@ function setMarker(lat, lng, name, infoHTML, pic) {
 
     if (markerList[name]) {
         markerList[name].setPosition(location);
+        google.maps.event.addListener(markerList[name], 'click', function() {
+            infowindow.setContent(infoHTML);
+            infowindow.open(map, markerList[name]);
+        });
         return;
     }
         
@@ -357,12 +373,11 @@ function setMarker(lat, lng, name, infoHTML, pic) {
         position: location,
         title: name,
         icon: pic,
-        info: infoHTML
     });
     markerList[name] = marker;
     marker.setMap(map);
     google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(marker.info);
+        infowindow.setContent(infoHTML);
         infowindow.open(map, marker);
     });
 }
