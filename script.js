@@ -258,7 +258,7 @@ function loadPins(Properties) {
     //////////// Blake Password ////////////
 
     password = propList.RofR_Password
-    setMarker(42.405855, -71.116689, "Room of Requirement", password, RofRLock);
+    setMarker(42.405941, -71.116706, "Room of Requirement", password, RofRLock);
 
     /////////// Sports /////////
 
