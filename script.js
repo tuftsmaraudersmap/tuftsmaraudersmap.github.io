@@ -138,7 +138,7 @@ function script(initLat, initLng, z) {
 function loadProperties() {
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API:   
-    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+    var cors_api_url = 'https://crossorigin.me/';
     var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersData_ME184'  
                         + '/Properties/'
                         +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
@@ -244,10 +244,10 @@ function loadPins(Properties) {
 
     //////////// Blake /////////
     if (propList.Blake_Availability) {
-        bakeAvail = JSON.parse(propList.Blake_Availability);
+        blakeAvail = JSON.parse(propList.Blake_Availability);
         formBlakeAvail = "<h3>Blake Pearlman Lab</h3>" + 
-                         "<p>Workstations Available: " + blakeAvail.workstations + "</p>"
-                         "<p>Chairs Available: " + blakeAvail.chairs + "</p>";
+                         "<p>Workstations Available: " + blakeAvail.FreeComputers + "</p>" +
+                         "<p>Chairs Available: " + blakeAvail.FreeSeats + "</p>";
 
         setMarker(42.405964, -71.116707, "Blake Availability", formBlakeAvail, workstation)
     }
@@ -298,7 +298,7 @@ function loadPins(Properties) {
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API:   
 
-    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+    var cors_api_url = 'https://crossorigin.me/';
     var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersTest_ME184'  
                         + '/Properties/'
                         +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
