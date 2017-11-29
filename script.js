@@ -126,7 +126,8 @@ function script(initLat, initLng, z) {
 	var initOptions = {
         zoom: z,
     	center: cent,
-    	mapTypeId: google.maps.MapTypeId.ROADMAP
+    	mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#f0ebdd"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#d6c69f"}]},{"featureType":"poi.school","elementType":"geometry.fill","stylers":[{"color":"#d6c69f"}]},{"featureType":"poi.school","elementType":"labels.icon","stylers":[{"visibility":"simplified"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels","stylers":[{"visibility":"off"}]}]
 	};
 	map = new google.maps.Map(document.getElementById("map"), initOptions);
     infowindow = new google.maps.InfoWindow();
@@ -237,10 +238,16 @@ function loadPins(Properties) {
     
     //////////// Blake /////////
 
+    bakeAvail = JSON.parse(propList.Blake_Availability);
+    formBlakeAvail = "<h3>Blake Pearlman Lab</h3>" + 
+                     "<p>Workstations Available: " + blakeAvail.workstations + "</p>"
+                     "<p>Chairs Available: " + blakeAvail.chairs + "</p>";
 
+    setMarker(42.405964, -71.116707, "Blake Availability", formBlakeAvail, workstation)
 
 
     //////////// Blake Password ////////////
+
     password = propList.RofR_Password
     setMarker(42.405855, -71.116689, "Room of Requirement", password, RofRLock);
     if (map.getZoom() > 21) {
