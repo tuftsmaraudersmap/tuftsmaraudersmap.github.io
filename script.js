@@ -6,6 +6,8 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+var peopList0 = {};
+var peopList1 = {};
 
 if (!('webkitSpeechRecognition' in window)) {
   upgrade();
@@ -314,11 +316,11 @@ function loadPins(Properties) {
 }
 
 function loadPeop(retPeop) {
-    peopList = retPeop.rows[0];
+    peopList1 = retPeop.rows[0];
 
-    for (var key in peopList) {
+    for (var key in peopList1) {
 
-        if (!peopList.hasOwnProperty(key)) {
+        if (!peopList1.hasOwnProperty(key)) {
             continue;
         }
 
@@ -327,32 +329,59 @@ function loadPeop(retPeop) {
             key == "tags" ||
             key == "thingTemplate")      {
             continue;
-        }       
+        }    
 
-        if (!peopList[key]) continue;
+        if (!peopList1[key] && (!(key in peopList0) || !peopList0[key])) {
+            continue;
+        }
 
-        personInfo = JSON.parse(peopList[key]);
+        if (!peopList1[key] && peopList0[key]) {
+            personInfo = JSON.parse(peopList0[key]);
+            console.log(personInfo);
+            console.log(markerList);
+            markerList[personInfo.name].setMap(null);
+            delete markerList[personInfo.name]; 
+            continue;
+        }
 
-        if (!personInfo.inUse) continue;
+        if ((key in peopList0) && peopList0[key]) {
+            personInfo0 = JSON.parse(peopList0[key]);
+            personInfo1 = JSON.parse(peopList1[key]);
 
-        if (personInfo.house == "Ravenclaw") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+            if (!personInfo1.inUse && personInfo0.inUse) {
+                markerList[personInfo0.name].setMap(null);
+                delete markerList[personInfo1.name]; 
+                continue;
+            }
+
+            if (!personInfo1.inUse) {
+                continue;
+            }
+        }
+
+        personInfo1 = JSON.parse(peopList1[key]);
+
+        if (personInfo1.house == "Ravenclaw") {
+            info = "<h3><b>" + personInfo1.name + "</h3></b>" +
                    "<img src='./images/ravenclaw.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else if (personInfo.house == "Gryffindor") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+            setMarker(personInfo1.location.lat, personInfo1.location.lng, personInfo1.name, info, footsteps);
+        } else if (personInfo1.house == "Gryffindor") {
+            info = "<h3><b>" + personInfo1.name + "</h3></b>" +
                    "<img src='./images/gryffindor.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else if (personInfo.house == "Slytherin") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+            setMarker(personInfo1.location.lat, personInfo1.location.lng, personInfo1.name, info, footsteps);
+        } else if (personInfo1.house == "Slytherin") {
+            info = "<h3><b>" + personInfo1.name + "</h3></b>" +
                    "<img src='./images/slytherin.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
-        } else if (personInfo.house == "Hufflepuff") {
-            info = "<h3><b>" + personInfo.name + "</h3></b>" +
+            setMarker(personInfo1.location.lat, personInfo1.location.lng, personInfo1.name, info, footsteps);
+        } else if (personInfo1.house == "Hufflepuff") {
+            info = "<h3><b>" + personInfo1.name + "</h3></b>" +
                    "<img src='./images/hufflepuff.png' height=130>";
-            setMarker(personInfo.location.lat, personInfo.location.lng, personInfo.name, info, footsteps);
+            setMarker(personInfo1.location.lat, personInfo1.location.lng, personInfo1.name, info, footsteps);
         } else {}
     }
+
+    peopList0 = peopList1;
+    console.log(peopList0);
 }
 
 //////////////// Utilities ////////////////
