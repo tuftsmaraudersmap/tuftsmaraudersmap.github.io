@@ -140,7 +140,7 @@ function script(initLat, initLng, z) {
 function loadProperties() {
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API:   
-    var cors_api_url = 'https://crossorigin.me/';
+    var cors_api_url = 'http://cors-anywhere.herokuapp.com/';
     var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersData_ME184'  
                         + '/Properties/'
                         +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
@@ -287,7 +287,7 @@ function loadPins(Properties) {
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API:   
 
-    var cors_api_url = 'https://crossorigin.me/';
+    var cors_api_url = 'http://cors-anywhere.herokuapp.com/';
     var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersTest_ME184'  
                         + '/Properties/'
                         +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
@@ -323,12 +323,14 @@ function loadPeop(retPeop) {
         }
 
         if (!peopList1[key] && peopList0[key]) {
-            personInfo = JSON.parse(peopList0[key]);
-            console.log(personInfo);
-            console.log(markerList);
-            markerList[personInfo.name].setMap(null);
-            delete markerList[personInfo.name]; 
-            continue;
+            if (personInfo.name in markerList) {
+                personInfo = JSON.parse(peopList0[key]);
+                console.log(personInfo);
+                console.log(markerList);
+                markerList[personInfo.name].setMap(null);
+                delete markerList[personInfo.name]; 
+                continue;
+            }
         }
 
         if ((key in peopList0) && peopList0[key]) {
@@ -381,7 +383,7 @@ function setMarker(lat, lng, name, infoHTML, pic) {
         google.maps.event.addListener(markerList[name], 'click', function() {
             infowindow.setContent(infoHTML);
             infowindow.open(map, markerList[name]);
-        });
+        }), {passive: true};
         return;
     }
         
@@ -395,7 +397,7 @@ function setMarker(lat, lng, name, infoHTML, pic) {
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(infoHTML);
         infowindow.open(map, marker);
-    });
+    }), {passive: true};
 }
 
 function formatMenu(dHall, menu) {
