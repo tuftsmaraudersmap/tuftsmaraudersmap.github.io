@@ -287,7 +287,7 @@ function loadPins(Properties) {
     // API Key: d0835923-7f86-490f-a542-1f4ae031a374
     // Documentation for Thingworx REST API:   
 
-    var cors_api_url = 'http://cors-anywhere.herokuapp.com/';
+    var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
     var thingworxurl = 'https://academic-ni.cloud.thingworx.com/Thingworx/Things/'+ 'maraudersTest_ME184'  
                         + '/Properties/'
                         +'?appKey=d0835923-7f86-490f-a542-1f4ae031a374';
